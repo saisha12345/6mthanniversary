@@ -13,6 +13,7 @@
       background: #fff0f6;
       color: #333;
       text-align: center;
+      overflow-x: hidden;
     }
     header {
       padding: 2rem 0;
@@ -25,8 +26,29 @@
       color: #d6336c;
     }
 
-    /* Confetti button */
-    #confettiButton button {
+    /* Rain container */
+    #rain-container {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 999;
+    }
+    .raindrop {
+      position: absolute;
+      top: -80px;
+      width: 40px;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* Rain button */
+    #rainButton button {
       margin: 1rem;
       padding: 0.75rem 1.5rem;
       font-size: 1rem;
@@ -36,6 +58,10 @@
       border-radius: 0.5rem;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    #rainButton button:hover {
+      transform: scale(1.05);
     }
 
     /* Timeline section */
@@ -101,6 +127,16 @@
       font-size: 2rem;
       color: #a61e4d;
     }
+    #startQuiz {
+      margin: 1rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      background: #d6336c;
+      color: white;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
     #quizContainer {
       display: none;
       max-width: 500px;
@@ -129,12 +165,12 @@
 </head>
 <body>
   <header>
-    <h1>Happy 6 Months, my marshmallow! 💕</h1>
+    <h1>Happy 6 Months, My Love! 💕</h1>
   </header>
 
-  <!-- Confetti -->
-  <div id="confettiButton">
-    <button> lOVE YOU FOREVER!!</button>
+  <div id="rain-container"></div>
+  <div id="rainButton">
+    <button>🌧️ Make It Rain!</button>
   </div>
 
   <!-- Timeline -->
@@ -169,11 +205,10 @@
   <!-- Photo Gallery -->
   <section id="gallery">
     <h2>Memories</h2>
-    <!-- Replace src with your own image URLs -->
-    <img src="30C0BC43-AD81-49BD-B58B-EE7B73E0A42B.JPG" alt="Memory 1" />
-    <img src="photo2.jpg" alt="Memory 2" />
-    <img src="photo3.jpg" alt="Memory 3" />
-    <img src="photo4.jpg" alt="Memory 4" />
+    <img src="photo1.jpg" alt="Memory 1">
+    <img src="photo2.jpg" alt="Memory 2">
+    <img src="photo3.jpg" alt="Memory 3">
+    <img src="photo4.jpg" alt="Memory 4">
   </section>
 
   <!-- Love Quiz -->
@@ -183,13 +218,13 @@
     <div id="quizContainer">
       <form id="quizForm">
         <label>1. Where did we first meet?
-          <input type="text" name="q1" required />
+          <input type="text" name="q1" required>
         </label>
         <label>2. What is my favorite thing that you do?
-          <input type="text" name="q2" required />
+          <input type="text" name="q2" required>
         </label>
         <label>3. When is our anniversary?
-          <input type="text" name="q3" required />
+          <input type="text" name="q3" required>
         </label>
         <button type="submit" id="submitQuiz">Submit</button>
       </form>
@@ -197,20 +232,28 @@
     </div>
   </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    // Confetti Effect
-    const confettiBtn = document.querySelector('#confettiButton button');
-    confettiBtn.addEventListener('click', () => {
-      confetti({ particleCount: 200, spread: 60 });
+    // Rain Logic
+    const rainContainer = document.getElementById('rain-container');
+    const rainBtn = document.querySelector('#rainButton button');
+    const gifSrc = 'images/rain.gif';
+    rainBtn.addEventListener('click', () => {
+      for (let i = 0; i < 50; i++) {
+        const drop = document.createElement('img');
+        drop.src = gifSrc;
+        drop.className = 'raindrop';
+        const size = Math.random() * 30 + 20;
+        drop.style.width = size + 'px';
+        drop.style.left = Math.random() * window.innerWidth + 'px';
+        drop.style.animationDuration = Math.random() * 2 + 3 + 's';
+        rainContainer.appendChild(drop);
+        setTimeout(() => rainContainer.removeChild(drop), 5000);
+      }
     });
 
     // Timeline Toggle
     document.querySelectorAll('.heart').forEach(el => {
-      el.addEventListener('click', () => {
-        const details = el.nextElementSibling;
-        details.classList.toggle('hidden');
-      });
+      el.addEventListener('click', () => el.nextElementSibling.classList.toggle('hidden'));
     });
 
     // Quiz Logic
@@ -218,21 +261,22 @@
     const quizContainer = document.getElementById('quizContainer');
     const quizForm = document.getElementById('quizForm');
     const resultDiv = document.getElementById('result');
-    const answers = { q1: 'cafe', q2: 'your smile', q3: '6 months' }; // customize correct answers
-
+    const answers = { q1: 'cafe', q2: 'your smile', q3: '6 months' };
     startQuizBtn.addEventListener('click', () => {
       quizContainer.style.display = 'block';
       startQuizBtn.style.display = 'none';
     });
-
     quizForm.addEventListener('submit', e => {
       e.preventDefault();
       let score = 0;
-      new FormData(quizForm).forEach((value, key) => {
-        if (value.trim().toLowerCase() === answers[key]) score++;
+      new FormData(quizForm).forEach((val, key) => {
+        if (val.trim().toLowerCase() === answers[key]) score++;
       });
       resultDiv.textContent = `You scored ${score}/3!`;
-      if (score === 3) confetti({ particleCount: 150, spread: 50 });
+      if (score === 3) {
+        // small celebration
+        rainBtn.click();
+      }
     });
   </script>
 </body>
