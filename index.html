@@ -25,6 +25,7 @@
     .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; color: #a61e4d; font-weight: bold; z-index: 1; }
     .carousel { position: absolute; top: 50%; left: 50%; width: 0; height: 0; animation: spin 12s linear infinite; }
     @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes spin-back { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } } to { transform: translate(-50%, -50%) rotate(360deg); } }
     .slide { position: absolute; top: 0; left: 0; }
     .slide img { width: 120px; height: 120px; border-radius: 50%; cursor: pointer; }
     .details { position: absolute; top: 130px; left: 50%; transform: translateX(-50%); font-size: 1rem; color: #333; white-space: nowrap; }
@@ -97,7 +98,7 @@
       {img:'hamster.gif',text:'Month 5: Cooking & laughing.'},
       {img:'totoro.gif',text:'Month 6: Celebrating us!'}
     ];
-    const radius=250;
+    const radius=150;
     months.forEach((m,i)=>{
       const angle=(360/months.length)*i;
       const slide=document.createElement('div');slide.className='slide';
