@@ -16,29 +16,20 @@
 
     /* Rain trigger */
     #rainButton { position: relative; display: inline-block; margin: 1rem; }
-    #rainButton img {
-      width: 300px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    #rainButton img:hover {
-      transform: scale(1.1);
-    }
+    #rainButton img { width: 300px; cursor: pointer; transition: transform 0.2s; }
     #rainButton img:hover { transform: scale(1.1); }
     .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; }
     .hidden { display: none; }
 
-    /* Slideshow timeline */
+    /* Our Journey grid of 3x2 */
     #timeline { padding: 2rem; }
     #timeline h2 { font-size: 2rem; margin-bottom: 1rem; color: #a61e4d; }
-    .slider { display: flex; align-items: center; justify-content: center; }
-    .slide { display: none; }
-    .slide.active { display: inline-block; }
-    .slide img { width: 300px; height: 300px; object-fit: cover; cursor: pointer; border: none; }
-    .details { margin-top: 0.5rem; font-size: 0.9rem; color: #333; }
-    .nav { cursor: pointer; font-size: 2rem; color: #a61e4d; user-select: none; margin: 0 1rem; }
+    .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 2rem; justify-content: center; }
+    .slider .item { position: relative; }
+    .slider .item img { width: 200px; height: 200px; object-fit: cover; cursor: pointer; border: none; }
+    .slider .details { display: none; position: absolute; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
 
-    /* Gallery & Quiz Unchanged */
+    /* Gallery & Quiz */
     #gallery, #quiz { padding: 2rem; }
     #gallery h2, #quiz h2 { font-size: 2rem; color: #a61e4d; }
     #gallery img { width: 150px; height: 150px; object-fit: cover; margin: 0.5rem; border-radius: 1rem; cursor: pointer; transition: transform 0.3s; }
@@ -59,36 +50,16 @@
     <div id="loveOverlay" class="love-overlay hidden">I luv u &lt;3</div>
   </div>
 
-  <!-- Slideshow Timeline -->
+  <!-- Our Journey 3x2 Grid -->
   <section id="timeline">
     <h2>Our Journey</h2>
     <div class="slider">
-      <span id="prev" class="nav">&#10094;</span>
-      <div class="slide active" data-month="1">
-        <img src="gary.gif" alt="Month 1" />
-        <div class="details hidden">Month 1: Our first date at that cute little café.</div>
-      </div>
-      <div class="slide" data-month="2">
-        <img src="pixelins.gif" alt="Month 2" />
-        <div class="details hidden">Month 2: The day we got ice cream and got caught in the rain.</div>
-      </div>
-      <div class="slide" data-month="3">
-        <img src="love.gif" alt="Month 3" />
-        <div class="details hidden">Month 3: Movie marathon and staying up all night talking.</div>
-      </div>
-      <div class="slide" data-month="4">
-        <img src="jupiter.gif" alt="Month 4" />
-        <div class="details hidden">Month 4: Our first trip to the beach together.</div>
-      </div>
-      <div class="slide" data-month="5">
-        <img src="hamster.gif" alt="Month 5" />
-        <div class="details hidden">Month 5: Cooking dinner together and laughing at our mistakes.</div>
-      </div>
-      <div class="slide" data-month="6">
-        <img src="totoro.gif" alt="Month 6" />
-        <div class="details hidden">Month 6: Celebrating us and this special site!</div>
-      </div>
-      <span id="next" class="nav">&#10095;</span>
+      <div class="item" data-month="1"><img src="gary.gif" alt="Month 1" /><div class="details">Month 1: Our first date at that cute little café.</div></div>
+      <div class="item" data-month="2"><img src="pixelins.gif" alt="Month 2" /><div class="details">Month 2: The day we got ice cream and got caught in the rain.</div></div>
+      <div class="item" data-month="3"><img src="love.gif" alt="Month 3" /><div class="details">Month 3: Movie marathon and staying up all night talking.</div></div>
+      <div class="item" data-month="4"><img src="jupiter.gif" alt="Month 4" /><div class="details">Month 4: Our first trip to the beach together.</div></div>
+      <div class="item" data-month="5"><img src="hamster.gif" alt="Month 5" /><div class="details">Month 5: Cooking dinner together and laughing at our mistakes.</div></div>
+      <div class="item" data-month="6"><img src="totoro.gif" alt="Month 6" /><div class="details">Month 6: Celebrating us and this special site!</div></div>
     </div>
   </section>
 
@@ -141,49 +112,11 @@
       setTimeout(() => loveOverlay.classList.add('hidden'), 2000);
     });
 
-    // Slideshow logic
-    const slides = document.querySelectorAll('.slide');
-    let current = 0;
-    document.getElementById('prev').addEventListener('click', () => changeSlide(-1));
-    document.getElementById('next').addEventListener('click', () => changeSlide(1));
-    function changeSlide(dir) {
-      slides[current].classList.remove('active');
-      current = (current + dir + slides.length) % slides.length;
-      slides[current].classList.add('active');
-      slides[current].querySelector('.details').classList.add('hidden');
-    }
-    slides.forEach(slide => {
-      slide.querySelector('img').addEventListener('click', () => {
-        slide.querySelector('.details').classList.toggle('hidden');
-      });
-    });
-
-        // Heart formation on 6th month detail click
-    const lastDetail = document.querySelector('.slide[data-month="6"] .details');
-    lastDetail.addEventListener('click', () => {
-      // Position all GIFs into a heart shape on left side
-      const heartCoords = [
-        { x: -200, y: -50 },
-        { x: -150, y: -120 },
-        { x: -80, y: -150 },
-        { x: 0, y: -130 },
-        { x: 80, y: -150 },
-        { x: 150, y: -120 }
-      ];
-      slides.forEach((slide, i) => {
-        slide.style.position = 'absolute';
-        slide.style.top = '50%';
-        slide.style.left = '30%';
-        slide.style.transform = `translate(${heartCoords[i].x}px, ${heartCoords[i].y}px)`;
-      });
-      // Show all detail texts on right side
-      slides.forEach((slide, i) => {
-        const txt = slide.querySelector('.details');
-        txt.style.position = 'absolute';
-        txt.style.top = `${20 + i*30}px`;
-        txt.style.right = '10%';
-        txt.classList.remove('hidden');
-      });
+    // Journey click logic
+    document.querySelectorAll('.item').forEach(item => {
+      const img = item.querySelector('img');
+      const det = item.querySelector('.details');
+      img.addEventListener('click', () => det.classList.toggle('hidden'));
     });
 
     // Quiz logic
