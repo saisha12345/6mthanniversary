@@ -23,7 +23,7 @@
     /* Our Journey grid of 3x2 */
     #timeline { padding: 2rem; margin-bottom: 4rem; }
     #timeline h2 { font-size: 2rem; margin-bottom: 1rem; color: #a61e4d; }
-    .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 13rem; justify-content: center; }
+    .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 8rem; justify-content: center; }
     .slider .item { display: flex; flex-direction: column; align-items: center; }
     .slider .item img { width: 200px; height: 200px; object-fit: cover; cursor: pointer; border: none; }
     .slider .details { display: none; margin-top: 0.5rem; background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: normal; max-width: 200px; text-align: center; }
@@ -138,9 +138,9 @@
       }
     }
     rainTrigger.addEventListener('click', () => {
-      loveOverlay.classList.remove('hidden');
+      // Toggle i luv u text and spawn cats
+      loveOverlay.classList.toggle('hidden');
       spawnCats();
-      setTimeout(() => loveOverlay.classList.add('hidden'), 2000);
     });
 
     // Journey click logic
