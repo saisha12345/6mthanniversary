@@ -109,9 +109,11 @@
     <button id="startQuiz">Take the Quiz!</button>
     <div id="quizContainer">
       <form id="quizForm">
-        <label>1. Where did we first meet? <input type="text" name="q1" required /></label>
-        <label>2. What is my favorite thing that you do? <input type="text" name="q2" required /></label>
-        <label>3. When is our anniversary? <input type="text" name="q3" required /></label>
+        <label>1. What do i love calling you? <input type="text" name="q1" required /></label>
+        <label>2. What bodypart of u do i love smelling the most? <input type="text" name="q2" required /></label>
+        <label>3. what date (enter no. only) is our anniversary? <input type="text" name="q3" required /></label>
+<label>4. who is ur best friend? <input type="text" name="q4" required /></label>
+        <label>5.does ur gf love u the most? <input type="text" name="q5" required /></label>
         <button type="submit" id="submitQuiz">Submit</button>
       </form>
       <div id="result"></div>
@@ -172,10 +174,10 @@
     document.getElementById('quizForm').addEventListener('submit', e => {
       e.preventDefault(); let score = 0;
       new FormData(e.target).forEach((val, key) => {
-        if (val.trim().toLowerCase() === { q1: 'cafe', q2: 'your smile', q3: '6 months' }[key]) score++;
+        if (val.trim().toLowerCase() === { q1: 'marshmallow', q2: 'armpit', q3: '11', q4: 'saisha', q5: 'yes' }[key]) score++;
       });
-      document.getElementById('result').innerText = `You scored ${score}/3!`;
-      if (score === 3) spawnCats();
+      document.getElementById('result').innerText = `You scored ${score}/5!`;
+      if (score === 5) spawnCats();
     });
   </script>
 </body>
