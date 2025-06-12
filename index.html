@@ -22,13 +22,35 @@
     .hidden { display: none; }
 
     /* Circular carousel */
-    #timeline { position: relative; height: 400px; margin: 2rem 0; }
-    .carousel { position: relative; width: 300px; height: 300px; margin: 0 auto; animation: spin 20s linear infinite; }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .slide { position: absolute; top: 50%; left: 50%; transform-origin: 0 -120px; }
-    .slide img { width: 80px; height: 80px; border-radius: 50%; cursor: pointer; }
-    .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; color: #a61e4d; font-weight: bold; }
-    .details { position: absolute; bottom: -2rem; width: 100%; text-align: center; font-size: 1rem; color: #333; }
+    #timeline { position: relative; width: 400px; height: 400px; margin: 2rem auto; }
+    .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; color: #a61e4d; font-weight: bold; z-index: 1; }
+    .slide {
+      --radius: 150px;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform-origin: 0px -150px;
+      animation: spin 12s linear infinite;
+    }
+    .slide img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .details {
+      position: absolute;
+      top: calc(50% + 80px);
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #333;
+      white-space: nowrap;
+    }
+    @keyframes spin {
+      to { transform: rotate(calc(var(--startdeg) + 360deg)) translate(var(--radius)) rotate(calc(-1 * (var(--startdeg) + 360deg)));
+      }
+    }
 
     /* Other sections unchanged */
     #gallery, #quiz { padding: 2rem; }
@@ -53,33 +75,30 @@
 
   <!-- Circular carousel -->
   <section id="timeline">
-    <div class="carousel" id="carousel">
-      <div class="center-text">Our Journey</div>
-      <!-- 6 slides at 60° increments -->
-      <div class="slide" data-month="1" style="transform: rotate(0deg) translate(0, -120px);">
-        <img src="gary.gif" alt="Month 1">
-        <div class="details hidden">Month 1: Our first date at that cute little café.</div>
-      </div>
-      <div class="slide" data-month="2" style="transform: rotate(60deg) translate(0, -120px);">
-        <img src="pixelins.gif" alt="Month 2">
-        <div class="details hidden">Month 2: Ice cream & rain adventure.</div>
-      </div>
-      <div class="slide" data-month="3" style="transform: rotate(120deg) translate(0, -120px);">
-        <img src="love.gif" alt="Month 3">
-        <div class="details hidden">Month 3: Movie marathon & late talks.</div>
-      </div>
-      <div class="slide" data-month="4" style="transform: rotate(180deg) translate(0, -120px);">
-        <img src="jupiter.gif" alt="Month 4">
-        <div class="details hidden">Month 4: Beach day fun.</div>
-      </div>
-      <div class="slide" data-month="5" style="transform: rotate(240deg) translate(0, -120px);">
-        <img src="hamster.gif" alt="Month 5">
-        <div class="details hidden">Month 5: Cooking & laughing.</div>
-      </div>
-      <div class="slide" data-month="6" style="transform: rotate(300deg) translate(0, -120px);">
-        <img src="totoro.gif" alt="Month 6">
-        <div class="details hidden">Month 6: Celebrating us!</div>
-      </div>
+    <div class="center-text">Our Journey</div>
+    <div class="slide" style="--startdeg:0deg;">
+      <img src="gary.gif" alt="Month 1">
+      <div class="details hidden">Month 1: Our first date at that cute little café.</div>
+    </div>
+    <div class="slide" style="--startdeg:60deg;">
+      <img src="pixelins.gif" alt="Month 2">
+      <div class="details hidden">Month 2: Ice cream & rain adventure.</div>
+    </div>
+    <div class="slide" style="--startdeg:120deg;">
+      <img src="love.gif" alt="Month 3">
+      <div class="details hidden">Month 3: Movie marathon & late talks.</div>
+    </div>
+    <div class="slide" style="--startdeg:180deg;">
+      <img src="jupiter.gif" alt="Month 4">
+      <div class="details hidden">Month 4: Beach day fun.</div>
+    </div>
+    <div class="slide" style="--startdeg:240deg;">
+      <img src="hamster.gif" alt="Month 5">
+      <div class="details hidden">Month 5: Cooking & laughing.</div>
+    </div>
+    <div class="slide" style="--startdeg:300deg;">
+      <img src="totoro.gif" alt="Month 6">
+      <div class="details hidden">Month 6: Celebrating us!</div>
     </div>
   </section>
 
@@ -92,7 +111,7 @@
     <img src="photo4.jpg" alt="Memory 4">
   </section>
 
-  <!-- Quiz -->
+  <!-- Love Quiz -->
   <section id="quiz">
     <h2>Love Quiz</h2>
     <button id="startQuiz">Take the Quiz!</button>
@@ -133,23 +152,22 @@
     });
 
     // Carousel interaction
-    const carousel=document.getElementById('carousel');
-    document.querySelectorAll('.slide img').forEach(img=>{
-      img.addEventListener('click', ()=>{
-        carousel.style.animationPlayState='paused';
+    document.querySelectorAll('.slide img').forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelectorAll('.slide').forEach(s => s.style.animationPlayState = 'paused');
         img.nextElementSibling.classList.remove('hidden');
       });
     });
 
     // Quiz logic
-    document.getElementById('startQuiz').addEventListener('click',()=>{
-      document.getElementById('quizContainer').style.display='block';
-      document.getElementById('startQuiz').style.display='none';
+    document.getElementById('startQuiz').addEventListener('click', () => {
+      document.getElementById('quizContainer').style.display = 'block';
+      document.getElementById('startQuiz').style.display = 'none';
     });
-    document.getElementById('quizForm').addEventListener('submit',e=>{
+    document.getElementById('quizForm').addEventListener('submit', e => {
       e.preventDefault(); let score=0;
-      new FormData(e.target).forEach((v,k)=>{ if(v.trim().toLowerCase()=== {'q1':'cafe','q2':'your smile','q3':'6 months'}[k]) score++; });
-      document.getElementById('result').innerText=`You scored ${score}/3!`;
+      new FormData(e.target).forEach((v,k) => { if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k]) score++; });
+      document.getElementById('result').innerText = `You scored ${score}/3!`;
       if(score===3) spawnCats();
     });
   </script>
