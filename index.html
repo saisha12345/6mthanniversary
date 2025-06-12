@@ -25,30 +25,15 @@
     #timeline { position: relative; width: 400px; height: 400px; margin: 2rem auto; }
     .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; color: #a61e4d; font-weight: bold; z-index: 1; }
     .slide {
-      --radius: 150px;
-      position: absolute;
-      top: 50%; left: 50%;
-      transform-origin: 0px -150px;
+      position: absolute; top: 50%; left: 50%;
+      transform-origin: 0px 0px;
+      /* radius will be set via JS */
       animation: spin 12s linear infinite;
     }
-    .slide img {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .details {
-      position: absolute;
-      top: calc(50% + 80px);
-      left: 50%;
-      transform: translateX(-50%);
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #333;
-      white-space: nowrap;
-    }
+    .slide img { width: 120px; height: 120px; border-radius: 50%; cursor: pointer; }
+    .details { position: absolute; top: calc(50% + 100px); left: 50%; transform: translateX(-50%); font-size: 1rem; color: #333; white-space: nowrap; }
     @keyframes spin {
-      to { transform: rotate(calc(var(--startdeg) + 360deg)) translate(var(--radius)) rotate(calc(-1 * (var(--startdeg) + 360deg)));
+      to { transform: rotate(calc(var(--startdeg,0deg) + 360deg)) translateX(var(--radius,0px)) rotate(calc(-1 * (var(--startdeg,0deg) + 360deg)));
       }
     }
 
@@ -151,10 +136,29 @@
       setTimeout(()=> loveOverlay.classList.add('hidden'),2000);
     });
 
-    // Carousel interaction
+    // Grow carousel radius and stop rotation at max
+    window.addEventListener('DOMContentLoaded', ()=>{
+      const slides = document.querySelectorAll('.slide');
+      let radius = 0;
+      const maxRadius = 150;
+      const growSpeed = 1;
+      const growInterval = setInterval(()=>{
+        radius += growSpeed;
+        slides.forEach(slide => slide.style.setProperty('--radius', radius+'px'));
+        if(radius >= maxRadius) {
+          // Stop growing
+          clearInterval(growInterval);
+          // Pause rotation
+          slides.forEach(slide => {
+            slide.style.animationPlayState = 'paused';
+          });
+        }
+      }, 20);
+    });
+
+    // Carousel interaction: clicking GIF reveals detail but does not resume rotation
     document.querySelectorAll('.slide img').forEach(img => {
       img.addEventListener('click', () => {
-        document.querySelectorAll('.slide').forEach(s => s.style.animationPlayState = 'paused');
         img.nextElementSibling.classList.remove('hidden');
       });
     });
@@ -166,7 +170,7 @@
     });
     document.getElementById('quizForm').addEventListener('submit', e => {
       e.preventDefault(); let score=0;
-      new FormData(e.target).forEach((v,k) => { if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k]) score++; });
+      new FormData(e.target).forEach((v,k)=>{ if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k]) score++; });
       document.getElementById('result').innerText = `You scored ${score}/3!`;
       if(score===3) spawnCats();
     });
