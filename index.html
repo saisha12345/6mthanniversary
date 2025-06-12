@@ -21,26 +21,78 @@
     .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; white-space: nowrap; }
     .hidden { display: none; }
 
-    /* Other sections unchanged... */
+    /* Timeline */
     #timeline { padding: 2rem; }
+    #timeline h2 { font-size: 2rem; margin-bottom: 1rem; color: #a61e4d; }
+    .event { margin: 1rem 0; }
+    .heart { font-size: 2rem; cursor: pointer; animation: beat 1s infinite; display: inline-block; }
+    @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+    .details { max-width: 600px; margin: 0.5rem auto; background: #ffe3ea; padding: 1rem; border-radius: 0.5rem; }
+
+    /* Gallery */
+    #gallery { padding: 2rem; }
+    #gallery h2 { font-size: 2rem; color: #a61e4d; }
+    #gallery img { width: 150px; height: 150px; object-fit: cover; margin: 0.5rem; border-radius: 1rem; cursor: pointer; transition: transform 0.3s; }
+    #gallery img:hover { transform: scale(1.1); }
+
+    /* Quiz */
     #quiz { padding: 2rem; background: #fff; }
-    /* (Rest of CSS omitted for brevity) */
+    #quiz h2 { font-size: 2rem; color: #a61e4d; }
+    #startQuiz, #submitQuiz { margin: 1rem; padding: 0.75rem 1.5rem; font-size: 1rem; border: none; background: #d6336c; color: white; border-radius: 0.5rem; cursor: pointer; }
+    #startQuiz:hover, #submitQuiz:hover { opacity: 0.9; }
+    #quizContainer { display: none; max-width: 500px; margin: 1rem auto; text-align: left; }
+    #quizContainer label { display: block; margin: 0.5rem 0; }
+    #result { margin-top: 1rem; font-weight: bold; color: #d6336c; }
   </style>
 </head>
 <body>
-  <header><h1>Happy 6 Months, My Love! 💕</h1></header>
+  <header>
+    <h1>Happy 6 Months, My Love! 💕</h1>
+  </header>
 
   <div id="rain-container"></div>
   <div id="rainButton">
-    <!-- Cat GIF trigger -->
     <img src="images/rain.gif" id="rainTrigger" alt="Cat GIF">
-    <!-- Love message overlay -->
     <div id="loveOverlay" class="love-overlay hidden">I luv u &lt;3</div>
   </div>
 
-  <!-- Timeline, Gallery, Quiz... (unchanged) -->
+  <!-- Timeline -->
+  <section id="timeline">
+    <h2>Our Journey</h2>
+    <div class="event"><span class="heart" data-month="1">❤️</span><div class="details hidden">Month 1: Our first date at that cute little café.</div></div>
+    <div class="event"><span class="heart" data-month="2">❤️</span><div class="details hidden">Month 2: The day we got ice cream and got caught in the rain.</div></div>
+    <div class="event"><span class="heart" data-month="3">❤️</span><div class="details hidden">Month 3: Movie marathon and staying up all night talking.</div></div>
+    <div class="event"><span class="heart" data-month="4">❤️</span><div class="details hidden">Month 4: Our first trip to the beach together.</div></div>
+    <div class="event"><span class="heart" data-month="5">❤️</span><div class="details hidden">Month 5: Cooking dinner together and laughing at our mistakes.</div></div>
+    <div class="event"><span class="heart" data-month="6">❤️</span><div class="details hidden">Month 6: Celebrating us and this special site!</div></div>
+  </section>
+
+  <!-- Photo Gallery -->
+  <section id="gallery">
+    <h2>Memories</h2>
+    <img src="photo1.jpg" alt="Memory 1">
+    <img src="photo2.jpg" alt="Memory 2">
+    <img src="photo3.jpg" alt="Memory 3">
+    <img src="photo4.jpg" alt="Memory 4">
+  </section>
+
+  <!-- Love Quiz -->
+  <section id="quiz">
+    <h2>Love Quiz</h2>
+    <button id="startQuiz">Take the Quiz!</button>
+    <div id="quizContainer">
+      <form id="quizForm">
+        <label>1. Where did we first meet? <input type="text" name="q1" required></label>
+        <label>2. What is my favorite thing that you do? <input type="text" name="q2" required></label>
+        <label>3. When is our anniversary? <input type="text" name="q3" required></label>
+        <button type="submit" id="submitQuiz">Submit</button>
+      </form>
+      <div id="result"></div>
+    </div>
+  </section>
 
   <script>
+    // Rain and love logic
     const rainContainer = document.getElementById('rain-container');
     const rainTrigger = document.getElementById('rainTrigger');
     const loveOverlay = document.getElementById('loveOverlay');
@@ -69,11 +121,28 @@
       }
     }
 
-    // Show overlay and rain on cat GIF click
     rainTrigger.addEventListener('click', () => {
       loveOverlay.classList.remove('hidden');
       spawnCats();
       setTimeout(() => loveOverlay.classList.add('hidden'), 2000);
+    });
+
+    // Timeline toggle
+    document.querySelectorAll('.heart').forEach(el => el.addEventListener('click', () => el.nextElementSibling.classList.toggle('hidden')));
+
+    // Quiz logic
+    const startQuizBtn = document.getElementById('startQuiz');
+    const quizContainer = document.getElementById('quizContainer');
+    const quizForm = document.getElementById('quizForm');
+    const resultDiv = document.getElementById('result');
+    const answers = { q1: 'cafe', q2: 'your smile', q3: '6 months' };
+
+    startQuizBtn.addEventListener('click', () => { quizContainer.style.display = 'block'; startQuizBtn.style.display = 'none'; });
+    quizForm.addEventListener('submit', e => {
+      e.preventDefault(); let score = 0;
+      new FormData(quizForm).forEach((val, key) => { if (val.trim().toLowerCase() === answers[key]) score++; });
+      resultDiv.textContent = `You scored ${score}/3!`;
+      if (score === 3) spawnCats();
     });
   </script>
 </body>
