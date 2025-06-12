@@ -22,23 +22,12 @@
     .hidden { display: none; }
 
     /* Our Journey grid of 3x2 */
-    #timeline { padding: 2rem; }
+    #timeline { padding: 2rem;  margin-bottom: 4rem; }
     #timeline h2 { font-size: 2rem; margin-bottom: 1rem; color: #a61e4d; }
-    .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 2rem; justify-content: center; }
+    .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 4rem; justify-content: center; }
     .slider .item { position: relative; }
     .slider .item img { width: 200px; height: 200px; object-fit: cover; cursor: pointer; border: none; }
-    .slider .details {
-      display: block;
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translate(-50%, 0.5rem);
-      background: #ffe3ea;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      white-space: nowrap;
-    }
+    .slider .details { display: none; position: absolute; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
 
     /* Gallery & Quiz */
     #gallery, #quiz { padding: 2rem; }
@@ -65,7 +54,7 @@
   <section id="timeline">
     <h2>Our Journey</h2>
     <div class="slider">
-      <div class="item" data-month="1"><img src="gary.gif" alt="Month 1" /><div class="details">Month 1: Our first date at that cute little café.</div></div>
+      <div class="item" data-month="1"><img src="gary.gif" alt="Month 1" /><div class="details hidden">Month 1: Our first date at that cute little café.</div></div>
       <div class="item" data-month="2"><img src="pixelins.gif" alt="Month 2" /><div class="details">Month 2: The day we got ice cream and got caught in the rain.</div></div>
       <div class="item" data-month="3"><img src="love.gif" alt="Month 3" /><div class="details">Month 3: Movie marathon and staying up all night talking.</div></div>
       <div class="item" data-month="4"><img src="jupiter.gif" alt="Month 4" /><div class="details">Month 4: Our first trip to the beach together.</div></div>
