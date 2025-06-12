@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy 6 Months!</title>
   <style>
-    /* Base reset */
     body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff0f6; color: #333; text-align: center; }
     header { padding: 2rem 0; background: #ffdde1; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     header h1 { margin: 0; font-size: 2.5rem; color: #d6336c; }
@@ -21,21 +20,14 @@
     .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; }
     .hidden { display: none; }
 
-    /* Circular carousel */
+    /* Carousel container spins */
     #timeline { position: relative; width: 400px; height: 400px; margin: 2rem auto; }
     .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; color: #a61e4d; font-weight: bold; z-index: 1; }
-    .slide {
-      position: absolute; top: 50%; left: 50%;
-      transform-origin: 0px 0px;
-      /* radius will be set via JS */
-      animation: spin 12s linear infinite;
-    }
+    .carousel { position: absolute; top: 50%; left: 50%; width: 0; height: 0; animation: spin 12s linear infinite; }
+    @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .slide { position: absolute; top: 0; left: 0; }
     .slide img { width: 120px; height: 120px; border-radius: 50%; cursor: pointer; }
-    .details { position: absolute; top: calc(50% + 100px); left: 50%; transform: translateX(-50%); font-size: 1rem; color: #333; white-space: nowrap; }
-    @keyframes spin {
-      to { transform: rotate(calc(var(--startdeg,0deg) + 360deg)) translateX(var(--radius,0px)) rotate(calc(-1 * (var(--startdeg,0deg) + 360deg)));
-      }
-    }
+    .details { position: absolute; top: 130px; left: 50%; transform: translateX(-50%); font-size: 1rem; color: #333; white-space: nowrap; }
 
     /* Other sections unchanged */
     #gallery, #quiz { padding: 2rem; }
@@ -51,43 +43,19 @@
 <body>
   <header><h1>Happy 6 Months, My Love! 💕</h1></header>
 
-  <!-- Rain trigger -->
   <div id="rain-container"></div>
   <div id="rainButton">
     <img src="images/rain.gif" id="rainTrigger" alt="Cat GIF">
     <div id="loveOverlay" class="love-overlay hidden">I luv u &lt;3</div>
   </div>
 
-  <!-- Circular carousel -->
   <section id="timeline">
     <div class="center-text">Our Journey</div>
-    <div class="slide" style="--startdeg:0deg;">
-      <img src="gary.gif" alt="Month 1">
-      <div class="details hidden">Month 1: Our first date at that cute little café.</div>
-    </div>
-    <div class="slide" style="--startdeg:60deg;">
-      <img src="pixelins.gif" alt="Month 2">
-      <div class="details hidden">Month 2: Ice cream & rain adventure.</div>
-    </div>
-    <div class="slide" style="--startdeg:120deg;">
-      <img src="love.gif" alt="Month 3">
-      <div class="details hidden">Month 3: Movie marathon & late talks.</div>
-    </div>
-    <div class="slide" style="--startdeg:180deg;">
-      <img src="jupiter.gif" alt="Month 4">
-      <div class="details hidden">Month 4: Beach day fun.</div>
-    </div>
-    <div class="slide" style="--startdeg:240deg;">
-      <img src="hamster.gif" alt="Month 5">
-      <div class="details hidden">Month 5: Cooking & laughing.</div>
-    </div>
-    <div class="slide" style="--startdeg:300deg;">
-      <img src="totoro.gif" alt="Month 6">
-      <div class="details hidden">Month 6: Celebrating us!</div>
+    <div class="carousel" id="carousel">
+      <!-- slides positioned via JS -->
     </div>
   </section>
 
-  <!-- Gallery -->
   <section id="gallery">
     <h2>Memories</h2>
     <img src="photo1.jpg" alt="Memory 1">
@@ -96,7 +64,6 @@
     <img src="photo4.jpg" alt="Memory 4">
   </section>
 
-  <!-- Love Quiz -->
   <section id="quiz">
     <h2>Love Quiz</h2>
     <button id="startQuiz">Take the Quiz!</button>
@@ -116,64 +83,36 @@
     const rainContainer = document.getElementById('rain-container');
     const rainTrigger = document.getElementById('rainTrigger');
     const loveOverlay = document.getElementById('loveOverlay');
-    const gifSrc = 'images/rain.gif';
     function spawnCats() {
-      for (let i=0; i<50; i++) {
-        const drop = document.createElement('img');
-        drop.src = gifSrc; drop.className='raindrop';
-        const size = Math.random()*30+20;
-        drop.style.width=size+'px';
-        drop.style.left=Math.random()*window.innerWidth+'px';
-        drop.style.animationDuration=(Math.random()*2+3)+'s';
-        drop.addEventListener('click', ()=>alert('I luv u <3'));
-        rainContainer.appendChild(drop);
-        setTimeout(()=> rainContainer.removeChild(drop),5000);
-      }
-    }
-    rainTrigger.addEventListener('click', ()=>{
-      loveOverlay.classList.remove('hidden');
-      spawnCats();
-      setTimeout(()=> loveOverlay.classList.add('hidden'),2000);
-    });
+      for (let i=0;i<50;i++){const d=document.createElement('img');d.src='images/rain.gif';d.className='raindrop';const s=Math.random()*30+20;d.style.width=s+'px';d.style.left=Math.random()*window.innerWidth+'px';d.style.animationDuration=Math.random()*2+3+'s';d.addEventListener('click',()=>alert('I luv u <3'));rainContainer.appendChild(d);setTimeout(()=>rainContainer.removeChild(d),5000);}    }
+    rainTrigger.addEventListener('click',()=>{loveOverlay.classList.remove('hidden');spawnCats();setTimeout(()=>loveOverlay.classList.add('hidden'),2000);});
 
-    // Grow carousel radius and stop rotation at max
-    window.addEventListener('DOMContentLoaded', ()=>{
-      const slides = document.querySelectorAll('.slide');
-      let radius = 0;
-      const maxRadius = 150;
-      const growSpeed = 1;
-      const growInterval = setInterval(()=>{
-        radius += growSpeed;
-        slides.forEach(slide => slide.style.setProperty('--radius', radius+'px'));
-        if(radius >= maxRadius) {
-          // Stop growing
-          clearInterval(growInterval);
-          // Pause rotation
-          slides.forEach(slide => {
-            slide.style.animationPlayState = 'paused';
-          });
-        }
-      }, 20);
-    });
-
-    // Carousel interaction: clicking GIF reveals detail but does not resume rotation
-    document.querySelectorAll('.slide img').forEach(img => {
-      img.addEventListener('click', () => {
-        img.nextElementSibling.classList.remove('hidden');
-      });
+    // Build carousel
+    const carousel=document.getElementById('carousel');
+    const months=[
+      {img:'gary.gif',text:'Month 1: Our first date at that cute little café.'},
+      {img:'pixelins.gif',text:'Month 2: Ice cream & rain adventure.'},
+      {img:'love.gif',text:'Month 3: Movie marathon & late talks.'},
+      {img:'jupiter.gif',text:'Month 4: Beach day fun.'},
+      {img:'hamster.gif',text:'Month 5: Cooking & laughing.'},
+      {img:'totoro.gif',text:'Month 6: Celebrating us!'}
+    ];
+    const radius=150;
+    months.forEach((m,i)=>{
+      const angle=(360/months.length)*i;
+      const slide=document.createElement('div');slide.className='slide';
+      slide.style.transform=`rotate(${angle}deg) translateX(${radius}px) rotate(${-angle}deg)`;
+      const img=document.createElement('img');img.src=m.img;img.alt=m.text;
+      const det=document.createElement('div');det.className='details hidden';det.innerText=m.text;
+      img.addEventListener('click',()=>{carousel.style.animationPlayState='paused';det.classList.toggle('hidden');});
+      slide.appendChild(img);
+      slide.appendChild(det);
+      carousel.appendChild(slide);
     });
 
     // Quiz logic
-    document.getElementById('startQuiz').addEventListener('click', () => {
-      document.getElementById('quizContainer').style.display = 'block';
-      document.getElementById('startQuiz').style.display = 'none';
-    });
-    document.getElementById('quizForm').addEventListener('submit', e => {
-      e.preventDefault(); let score=0;
-      new FormData(e.target).forEach((v,k)=>{ if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k]) score++; });
-      document.getElementById('result').innerText = `You scored ${score}/3!`;
-      if(score===3) spawnCats();
-    });
+    document.getElementById('startQuiz').addEventListener('click',()=>{document.getElementById('quizContainer').style.display='block';document.getElementById('startQuiz').style.display='none';});
+    document.getElementById('quizForm').addEventListener('submit',e=>{e.preventDefault();let score=0;new FormData(e.target).forEach((v,k)=>{if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k])score++;});document.getElementById('result').innerText=`You scored ${score}/3!`;if(score===3)spawnCats();});
   </script>
 </body>
 </html>
