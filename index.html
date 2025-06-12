@@ -5,37 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy 6 Months!</title>
   <style>
-    body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff0f6; color: #333; text-align: center; }
+    /* Reset & base */
+    body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff0f6; color: #333; text-align: center; overflow-x: hidden; }
     header { padding: 2rem 0; background: #ffdde1; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     header h1 { margin: 0; font-size: 2.5rem; color: #d6336c; }
 
     /* Rain container */
     #rain-container { pointer-events: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 999; }
-    .raindrop { position: absolute; top: -80px; width: 40px; animation: fall 5s linear infinite; cursor: pointer; }
+    .raindrop { position: absolute; top: -80px; width: 40px; animation: fall linear infinite; cursor: pointer; }
     @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-    /* Rain trigger */
-    #rainButton img { width: 100px; margin: 1rem; cursor: pointer; transition: transform 0.2s; }
+    /* Rain trigger (cat GIF) and overlay */
+    #rainButton { position: relative; display: inline-block; }
+    #rainButton img { margin: 1rem; width: 180px; cursor: pointer; transition: transform 0.2s; }
     #rainButton img:hover { transform: scale(1.1); }
-    .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; }
+    .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; white-space: nowrap; }
     .hidden { display: none; }
 
-    /* Carousel container spins */
-    #timeline { position: relative; width: 400px; height: 400px; margin: 2rem auto; }
-    .center-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; color: #a61e4d; font-weight: bold; z-index: 1; }
-    .carousel { position: absolute; top: 50%; left: 50%; width: 0; height: 0; animation: spin 12s linear infinite; }
-    @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-    @keyframes spin-back { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } } to { transform: translate(-50%, -50%) rotate(360deg); } }
-    .slide { position: absolute; top: 0; left: 0; }
-    .slide img { width: 120px; height: 120px; border-radius: 50%; cursor: pointer; }
-    .details { position: absolute; top: 130px; left: 50%; transform: translateX(-50%); font-size: 1rem; color: #333; white-space: nowrap; }
+    /* Slideshow timeline */
+    #timeline { padding: 2rem; }
+    #timeline h2 { font-size: 2rem; margin-bottom: 1rem; color: #a61e4d; }
+    .slider { position: relative; display: flex; align-items: center; justify-content: center; }
+    .slide { display: none; }
+    .slide.active { display: inline-block; }
+    .slide img { width: 120px; height: 120px; object-fit: cover; cursor: pointer; border: none; }
+    .details { margin-top: 0.5rem; font-size: 0.9rem; color: #333; }
+    .nav { cursor: pointer; font-size: 2rem; color: #a61e4d; user-select: none; margin: 0 1rem; }
 
-    /* Other sections unchanged */
-    #gallery, #quiz { padding: 2rem; }
-    #gallery h2, #quiz h2 { font-size: 2rem; color: #a61e4d; }
+    /* Gallery */
+    #gallery { padding: 2rem; }
+    #gallery h2 { font-size: 2rem; color: #a61e4d; }
     #gallery img { width: 150px; height: 150px; object-fit: cover; margin: 0.5rem; border-radius: 1rem; cursor: pointer; transition: transform 0.3s; }
     #gallery img:hover { transform: scale(1.1); }
+
+    /* Quiz */
+    #quiz { padding: 2rem; background: #fff; }
+    #quiz h2 { font-size: 2rem; color: #a61e4d; }
     #startQuiz, #submitQuiz { margin: 1rem; padding: 0.75rem 1.5rem; font-size: 1rem; border: none; background: #d6336c; color: white; border-radius: 0.5rem; cursor: pointer; }
+    #startQuiz:hover, #submitQuiz:hover { opacity: 0.9; }
     #quizContainer { display: none; max-width: 500px; margin: 1rem auto; text-align: left; }
     #quizContainer label { display: block; margin: 0.5rem 0; }
     #result { margin-top: 1rem; font-weight: bold; color: #d6336c; }
@@ -44,19 +51,47 @@
 <body>
   <header><h1>Happy 6 Months, My Love! 💕</h1></header>
 
+  <!-- Rain trigger -->
   <div id="rain-container"></div>
   <div id="rainButton">
     <img src="images/rain.gif" id="rainTrigger" alt="Cat GIF">
     <div id="loveOverlay" class="love-overlay hidden">I luv u &lt;3</div>
   </div>
 
+  <!-- Simplified Slideshow Timeline -->
   <section id="timeline">
-    <div class="center-text">Our Journey</div>
-    <div class="carousel" id="carousel">
-      <!-- slides positioned via JS -->
+    <h2>Our Journey</h2>
+    <div class="slider">
+      <span id="prev" class="nav">&#10094;</span>
+      <div class="slide active" data-month="1">
+        <img src="gary.gif" alt="Month 1">
+        <div class="details hidden">Month 1: Our first date at that cute little café.</div>
+      </div>
+      <div class="slide" data-month="2">
+        <img src="pixelins.gif" alt="Month 2">
+        <div class="details hidden">Month 2: The day we got ice cream and got caught in the rain.</div>
+      </div>
+      <div class="slide" data-month="3">
+        <img src="love.gif" alt="Month 3">
+        <div class="details hidden">Month 3: Movie marathon and staying up all night talking.</div>
+      </div>
+      <div class="slide" data-month="4">
+        <img src="jupiter.gif" alt="Month 4">
+        <div class="details hidden">Month 4: Our first trip to the beach together.</div>
+      </div>
+      <div class="slide" data-month="5">
+        <img src="hamster.gif" alt="Month 5">
+        <div class="details hidden">Month 5: Cooking dinner together and laughing at our mistakes.</div>
+      </div>
+      <div class="slide" data-month="6">
+        <img src="totoro.gif" alt="Month 6">
+        <div class="details hidden">Month 6: Celebrating us and this special site!</div>
+      </div>
+      <span id="next" class="nav">&#10095;</span>
     </div>
   </section>
 
+  <!-- Photo Gallery -->
   <section id="gallery">
     <h2>Memories</h2>
     <img src="photo1.jpg" alt="Memory 1">
@@ -65,14 +100,15 @@
     <img src="photo4.jpg" alt="Memory 4">
   </section>
 
+  <!-- Love Quiz -->
   <section id="quiz">
     <h2>Love Quiz</h2>
     <button id="startQuiz">Take the Quiz!</button>
     <div id="quizContainer">
       <form id="quizForm">
-        <label>1. Where did we first meet?<input type="text" name="q1" required></label>
-        <label>2. What’s my favorite thing you do?<input type="text" name="q2" required></label>
-        <label>3. When is our anniversary?<input type="text" name="q3" required></label>
+        <label>1. Where did we first meet? <input type="text" name="q1" required></label>
+        <label>2. What is my favorite thing that you do? <input type="text" name="q2" required></label>
+        <label>3. When is our anniversary? <input type="text" name="q3" required></label>
         <button type="submit" id="submitQuiz">Submit</button>
       </form>
       <div id="result"></div>
@@ -80,40 +116,70 @@
   </section>
 
   <script>
-    // Rain logic
+    // Rain and love logic
     const rainContainer = document.getElementById('rain-container');
     const rainTrigger = document.getElementById('rainTrigger');
     const loveOverlay = document.getElementById('loveOverlay');
+    const gifSrc = 'images/rain.gif';
     function spawnCats() {
-      for (let i=0;i<50;i++){const d=document.createElement('img');d.src='images/rain.gif';d.className='raindrop';const s=Math.random()*30+20;d.style.width=s+'px';d.style.left=Math.random()*window.innerWidth+'px';d.style.animationDuration=Math.random()*2+3+'s';d.addEventListener('click',()=>alert('I luv u <3'));rainContainer.appendChild(d);setTimeout(()=>rainContainer.removeChild(d),5000);}    }
-    rainTrigger.addEventListener('click',()=>{loveOverlay.classList.remove('hidden');spawnCats();setTimeout(()=>loveOverlay.classList.add('hidden'),2000);});
+      for (let i = 0; i < 50; i++) {
+        const drop = document.createElement('img');
+        drop.src = gifSrc;
+        drop.className = 'raindrop';
+        const size = Math.random() * 30 + 20;
+        drop.style.width = size + 'px';
+        drop.style.left = Math.random() * window.innerWidth + 'px';
+        drop.style.animationDuration = Math.random() * 2 + 3 + 's';
+        drop.addEventListener('click', () => {
+          const msg = document.createElement('div');
+          msg.innerText = 'I luv u <3';
+          msg.className = 'love-overlay';
+          const rect = drop.getBoundingClientRect();
+          msg.style.top = rect.top + 'px'; msg.style.left = rect.left + 'px';
+          rainContainer.appendChild(msg);
+          setTimeout(() => rainContainer.removeChild(msg), 2000);
+        });
+        rainContainer.appendChild(drop);
+        setTimeout(() => rainContainer.removeChild(drop), 5000);
+      }
+    }
+    rainTrigger.addEventListener('click', () => {
+      loveOverlay.classList.remove('hidden');
+      spawnCats();
+      setTimeout(() => loveOverlay.classList.add('hidden'), 2000);
+    });
 
-    // Build carousel
-    const carousel=document.getElementById('carousel');
-    const months=[
-      {img:'gary.gif',text:'Month 1: Our first date at that cute little café.'},
-      {img:'pixelins.gif',text:'Month 2: Ice cream & rain adventure.'},
-      {img:'love.gif',text:'Month 3: Movie marathon & late talks.'},
-      {img:'jupiter.gif',text:'Month 4: Beach day fun.'},
-      {img:'hamster.gif',text:'Month 5: Cooking & laughing.'},
-      {img:'totoro.gif',text:'Month 6: Celebrating us!'}
-    ];
-    const radius=150;
-    months.forEach((m,i)=>{
-      const angle=(360/months.length)*i;
-      const slide=document.createElement('div');slide.className='slide';
-      slide.style.transform=`rotate(${angle}deg) translateX(${radius}px) rotate(${-angle}deg)`;
-      const img=document.createElement('img');img.src=m.img;img.alt=m.text;
-      const det=document.createElement('div');det.className='details hidden';det.innerText=m.text;
-      img.addEventListener('click',()=>{carousel.style.animationPlayState='paused';det.classList.toggle('hidden');});
-      slide.appendChild(img);
-      slide.appendChild(det);
-      carousel.appendChild(slide);
+    // Slideshow logic
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    document.getElementById('prev').addEventListener('click', () => changeSlide(-1));
+    document.getElementById('next').addEventListener('click', () => changeSlide(1));
+    function changeSlide(dir) {
+      slides[current].classList.remove('active');
+      current = (current + dir + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      slides[current].querySelector('.details').classList.add('hidden');
+    }
+    // Toggle detail on GIF click
+    slides.forEach(slide => {
+      slide.querySelector('img').addEventListener('click', () => {
+        slide.querySelector('.details').classList.toggle('hidden');
+      });
     });
 
     // Quiz logic
-    document.getElementById('startQuiz').addEventListener('click',()=>{document.getElementById('quizContainer').style.display='block';document.getElementById('startQuiz').style.display='none';});
-    document.getElementById('quizForm').addEventListener('submit',e=>{e.preventDefault();let score=0;new FormData(e.target).forEach((v,k)=>{if(v.trim().toLowerCase()==={'q1':'cafe','q2':'your smile','q3':'6 months'}[k])score++;});document.getElementById('result').innerText=`You scored ${score}/3!`;if(score===3)spawnCats();});
+    const startQuizBtn = document.getElementById('startQuiz');
+    const quizContainer = document.getElementById('quizContainer');
+    const quizForm = document.getElementById('quizForm');
+    const resultDiv = document.getElementById('result');
+    const answers = { q1: 'cafe', q2: 'your smile', q3: '6 months' };
+    startQuizBtn.addEventListener('click', () => { quizContainer.style.display = 'block'; startQuizBtn.style.display = 'none'; });
+    quizForm.addEventListener('submit', e => {
+      e.preventDefault(); let score = 0;
+      new FormData(quizForm).forEach((val, key) => { if (val.trim().toLowerCase() === answers[key]) score++; });
+      resultDiv.textContent = `You scored ${score}/3!`;
+      if (score === 3) spawnCats();
+    });
   </script>
 </body>
 </html>
