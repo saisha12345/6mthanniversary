@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy 6 Months!</title>
-  <style>
+  <title>Happy 6 Months!</n  <style>
     /* Basic reset and styling */
     body {
       margin: 0;
@@ -48,21 +47,17 @@
       to { transform: translateY(110vh) rotate(360deg); }
     }
 
-    /* Rain button */
-    #rainButton button {
+    /* Rain trigger (cat GIF) */
+    #rainButton img {
       margin: 1rem;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      border: none;
-      background: #d6336c;
-      color: white;
-      border-radius: 0.5rem;
+      width: 80px;
       cursor: pointer;
+      border-radius: 0.5rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       transition: transform 0.2s;
     }
-    #rainButton button:hover {
-      transform: scale(1.05);
+    #rainButton img:hover {
+      transform: scale(1.1);
     }
 
     /* Overlay message */
@@ -156,7 +151,8 @@
 
   <div id="rain-container"></div>
   <div id="rainButton">
-    <button>🌧️ Make It Rain Cats!</button>
+    <!-- Clickable cat GIF to trigger rain -->
+    <img src="images/rain.gif" id="rainTrigger" alt="Cat GIF">
   </div>
 
   <!-- Timeline -->
@@ -197,7 +193,7 @@
   <script>
     // Rain Logic with click-to-love-message
     const rainContainer = document.getElementById('rain-container');
-    const rainBtn = document.querySelector('#rainButton button');
+    const rainTrigger = document.getElementById('rainTrigger');
     const gifSrc = 'images/rain.gif';
     function spawnCats() {
       for (let i = 0; i < 50; i++) {
@@ -213,7 +209,6 @@
           const msg = document.createElement('div');
           msg.innerText = 'I luv u <3';
           msg.className = 'love-msg';
-          // place message at drop's last known position
           const rect = drop.getBoundingClientRect();
           msg.style.top = rect.top + 'px';
           msg.style.left = rect.left + 'px';
@@ -221,11 +216,10 @@
           setTimeout(() => rainContainer.removeChild(msg), 2000);
         });
         rainContainer.appendChild(drop);
-        // remove drop after fall
         setTimeout(() => rainContainer.removeChild(drop), 5000);
       }
     }
-    rainBtn.addEventListener('click', spawnCats);
+    rainTrigger.addEventListener('click', spawnCats);
 
     // Timeline Toggle
     document.querySelectorAll('.heart').forEach(el => el.addEventListener('click', () => el.nextElementSibling.classList.toggle('hidden')));
