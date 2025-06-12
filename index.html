@@ -113,14 +113,15 @@
     window.addEventListener('DOMContentLoaded', () => {
       const items = document.querySelectorAll('.journey-item');
       // Heart shape offsets (percentages)
-      const coords = [
-        { x: 0,   y: -30 },
-        { x: 25,  y: -5  },
-        { x: 15,  y: 25  },
-        { x: -15, y: 25  },
-        { x: -25, y: -5  },
-        { x: 0,   y: 10  }
-      ];
+     const coords = [
+  { x: 0,   y: -40 },  // top center
+  { x: 30,  y: -15 },  // upper right
+  { x: 20,  y: 20  },  // lower right
+  { x: 0,   y: 35  },  // bottom point
+  { x: -20, y: 20  },  // lower left
+  { x: -30, y: -15 }   // upper left
+];
+
       items.forEach((item, i) => {
         const { x, y } = coords[i];
         item.style.left = `calc(50% + ${x}%)`;
