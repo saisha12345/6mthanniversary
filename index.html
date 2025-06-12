@@ -16,7 +16,14 @@
 
     /* Rain trigger */
     #rainButton { position: relative; display: inline-block; margin: 1rem; }
-    #rainButton img { width: 100px; cursor: pointer; transition: transform 0.2s; }
+    #rainButton img {
+      width: 300px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #rainButton img:hover {
+      transform: scale(1.1);
+    }
     #rainButton img:hover { transform: scale(1.1); }
     .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; }
     .hidden { display: none; }
@@ -148,6 +155,34 @@
     slides.forEach(slide => {
       slide.querySelector('img').addEventListener('click', () => {
         slide.querySelector('.details').classList.toggle('hidden');
+      });
+    });
+
+        // Heart formation on 6th month detail click
+    const lastDetail = document.querySelector('.slide[data-month="6"] .details');
+    lastDetail.addEventListener('click', () => {
+      // Position all GIFs into a heart shape on left side
+      const heartCoords = [
+        { x: -200, y: -50 },
+        { x: -150, y: -120 },
+        { x: -80, y: -150 },
+        { x: 0, y: -130 },
+        { x: 80, y: -150 },
+        { x: 150, y: -120 }
+      ];
+      slides.forEach((slide, i) => {
+        slide.style.position = 'absolute';
+        slide.style.top = '50%';
+        slide.style.left = '30%';
+        slide.style.transform = `translate(${heartCoords[i].x}px, ${heartCoords[i].y}px)`;
+      });
+      // Show all detail texts on right side
+      slides.forEach((slide, i) => {
+        const txt = slide.querySelector('.details');
+        txt.style.position = 'absolute';
+        txt.style.top = `${20 + i*30}px`;
+        txt.style.right = '10%';
+        txt.classList.remove('hidden');
       });
     });
 
