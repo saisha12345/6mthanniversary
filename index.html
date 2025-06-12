@@ -167,6 +167,30 @@
       });
     });
 
+    // Heart formation on last GIF detail click
+    const lastDetail = document.querySelector('.slide[data-month="6"] .details');
+    lastDetail.addEventListener('click', () => {
+      // show all slides
+      slides.forEach(slide => slide.style.display = 'inline-block');
+      // approximate heart coordinates
+      const coords = [
+        { x: 0, y: -120 },
+        { x: 80, y: -60 },
+        { x: 100, y: 20 },
+        { x: 0, y: 100 },
+        { x: -100, y: 20 },
+        { x: -80, y: -60 }
+      ];
+      slides.forEach((slide, i) => {
+        slide.style.position = 'absolute';
+        slide.style.top = '50%';
+        slide.style.left = '50%';
+        slide.style.transition = 'transform 1s ease';
+        slide.style.transform = `translate(${coords[i].x}px, ${coords[i].y}px)`;
+      });
+    });
+    });
+
     // Quiz logic
     const startQuizBtn = document.getElementById('startQuiz');
     const quizContainer = document.getElementById('quizContainer');
