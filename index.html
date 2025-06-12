@@ -19,7 +19,6 @@
     #rainButton img { width: 300px; cursor: pointer; transition: transform 0.2s; }
     #rainButton img:hover { transform: scale(1.1); }
     .love-overlay { position: absolute; top: -1.5rem; left: 50%; transform: translateX(-50%); color: #d6336c; font-size: 1.2rem; font-weight: bold; pointer-events: none; }
-    .hidden { display: none; }
 
     /* Our Journey grid of 3x2 */
     #timeline { padding: 2rem; margin-bottom: 4rem; }
@@ -27,8 +26,8 @@
     .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 8rem; justify-content: center; }
     .slider .item { position: relative; }
     .slider .item img { width: 200px; height: 200px; object-fit: cover; cursor: pointer; border: none; }
-    .slider .details { display: block; position: absolute; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
-    .details.hidden { display: none; }
+    .slider .details { display: none; position: absolute; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
+    .slider .details.show { display: block; }
 
     /* Gallery & Quiz */
     #gallery, #quiz { padding: 2rem; }
@@ -55,12 +54,30 @@
   <section id="timeline">
     <h2>Our Journey</h2>
     <div class="slider">
-      <div class="item" data-month="1"><img src="gary.gif" alt="Month 1" /><div class="details hidden">Month 1: Our first date at that cute little café.</div></div>
-      <div class="item" data-month="2"><img src="pixelins.gif" alt="Month 2" /><div class="details hidden">Month 2: The day we got ice cream and got caught in the rain.</div></div>
-      <div class="item" data-month="3"><img src="love.gif" alt="Month 3" /><div class="details hidden">Month 3: Movie marathon and staying up all night talking.</div></div>
-      <div class="item" data-month="4"><img src="jupiter.gif" alt="Month 4" /><div class="details hidden">Month 4: Our first trip to the beach together.</div></div>
-      <div class="item" data-month="5"><img src="hamster.gif" alt="Month 5" /><div class="details hidden">Month 5: Cooking dinner together and laughing at our mistakes.</div></div>
-      <div class="item" data-month="6"><img src="totoro.gif" alt="Month 6" /><div class="details hidden">Month 6: Celebrating us and this special site!</div></div>
+      <div class="item" data-month="1">
+        <img src="gary.gif" alt="Month 1" />
+        <div class="details">Month 1: Our first date at that cute little café.</div>
+      </div>
+      <div class="item" data-month="2">
+        <img src="pixelins.gif" alt="Month 2" />
+        <div class="details">Month 2: The day we got ice cream and got caught in the rain.</div>
+      </div>
+      <div class="item" data-month="3">
+        <img src="love.gif" alt="Month 3" />
+        <div class="details">Month 3: Movie marathon and staying up all night talking.</div>
+      </div>
+      <div class="item" data-month="4">
+        <img src="jupiter.gif" alt="Month 4" />
+        <div class="details">Month 4: Our first trip to the beach together.</div>
+      </div>
+      <div class="item" data-month="5">
+        <img src="hamster.gif" alt="Month 5" />
+        <div class="details">Month 5: Cooking dinner together and laughing at our mistakes.</div>
+      </div>
+      <div class="item" data-month="6">
+        <img src="totoro.gif" alt="Month 6" />
+        <div class="details">Month 6: Celebrating us and this special site!</div>
+      </div>
     </div>
   </section>
 
@@ -117,7 +134,7 @@
     document.querySelectorAll('.item').forEach(item => {
       const img = item.querySelector('img');
       const det = item.querySelector('.details');
-      img.addEventListener('click', () => det.classList.toggle('hidden'));
+      img.addEventListener('click', () => det.classList.toggle('show'));
     });
 
     // Quiz logic
