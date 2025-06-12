@@ -27,7 +27,18 @@
     .slider { display: grid; grid-template-columns: repeat(3, auto); grid-gap: 2rem; justify-content: center; }
     .slider .item { position: relative; }
     .slider .item img { width: 200px; height: 200px; object-fit: cover; cursor: pointer; border: none; }
-    .slider .details { display: none; position: absolute; top: 100%; left: 50%; transform: translate(-50%, 0.5rem); background: #ffe3ea; padding: 0.5rem 1rem; border-radius: 0.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); white-space: nowrap; }
+    .slider .details {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, 0.5rem);
+      background: #ffe3ea;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      white-space: nowrap;
+    }
 
     /* Gallery & Quiz */
     #gallery, #quiz { padding: 2rem; }
